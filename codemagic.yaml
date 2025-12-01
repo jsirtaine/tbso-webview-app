@@ -1,0 +1,81 @@
+# Fichier de configuration Codemagic pour un projet Capacitor iOS Webview
+# Placez ce fichier à la racine de votre dépôt Git.
+
+workflows:
+  ios-build-webview:
+    name: Capacitor iOS Webview Build
+    max_build_duration: 60 # Durée maximale de la construction en minutes
+
+    # 1. Environnement de Construction
+    instance_type: mac_mini_m1 # Nécessaire pour la compilation iOS
+    environment:
+      # Définir les variables d'environnement
+      vars:
+        XCODE_SCHEME: "App" # Nom du schéma Xcode par défaut pour Capacitor
+        APP_ID: "com.tbso.society" # ID de votre application
+        
+      # Définir les versions des outils
+      xcode: latest
+      cocoapods: default
+      node: 20 # Utiliser Node.js pour les commandes npm et Capacitor
+
+    # 2. Dépendances et Préparation
+    scripts:
+      - name: Install Node dependencies
+        script: |
+          npm install
+          
+      - name: Add iOS platform and generate assets
+        script: |
+          # Ajoute la plateforme iOS (recrée le dossier ios/)
+          npx capacitor add ios
+          
+          # Regénère les icônes et splash screens
+          npx capacitor-assets generate
+          
+          # Synchronise la configuration web avec le projet natif
+          npx capacitor sync ios
+          
+      - name: Install CocoaPods
+        script: |
+          # Installe les dépendances natives iOS
+          cd ios/App
+          pod install
+          
+    # 3. Configuration de la Signature Apple
+    # Codemagic gère la signature via l'interface utilisateur.
+    # Vous devez télécharger vos certificats et profils de provisionnement 
+    # dans la section "App Settings" de Codemagic.
+    publishing:
+      ios_user_and_team_secrets: 
+        certificate_and_profile_matching: true
+        
+    # 4. Compilation iOS
+    integrations:
+      app_store_connect: true # Active l'intégration App Store Connect
+      
+    build_scripts:
+      - name: Build iOS App
+        script: |
+          # Utilise l'outil intégré de Codemagic pour compiler l'IPA
+          xcode-project build-ipa \
+            --workspace "ios/App/App.xcworkspace" \
+            --scheme "$XCODE_SCHEME" \
+            --configuration "Release" \
+            --export-method "app-store" # Utiliser "app-store" pour TestFlight/App Store
+            
+    # 5. Publication (Optionnel)
+    publishing:
+      email:
+        recipients:
+          - votre.email@example.com # Recevoir une notification de fin de build
+        success: true
+        failure: true
+      
+      # Décommenter et configurer pour soumettre automatiquement à TestFlight
+      # app_store_connect:
+      #   auth:
+      #     api_key: App Store Connect API Key
+      #   submit_to_testflight: true
+      #   teams:
+      #     - Votre Team Name
