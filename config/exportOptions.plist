@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Méthode d'exportation : app-store pour TestFlight/App Store -->
+    <key>method</key>
+    <string>app-store</string> 
+    
+    <!-- L'ID de votre équipe Apple Developer (Team ID ) -->
+    <!-- Vous le trouverez dans votre compte Apple Developer -->
+    <key>teamID</key>
+    <string>PPPPPPPP</string> 
+    
+    <!-- Optionnel : Inclure le Bitcode (recommandé par Apple) -->
+    <key>uploadBitcode</key>
+    <true/>
+    
+    <!-- Optionnel : Inclure les symboles de débogage -->
+    <key>uploadSymbols</key>
+    <true/>
+    
+    <!-- Optionnel : Spécifier le profil de provisionnement (souvent géré par Codemagic) -->
+    <!-- <key>provisioningProfiles</key>
+    <dict>
+        <key>com.tbso.society</key>
+        <string>Nom de votre profil de provisionnement</string>
+    </dict> -->
+</dict>
+</plist>
