@@ -33,13 +33,24 @@ workflows:
           cd ios/App
           pod install
           
-      # 3. Compilation iOS
+      # 3. Compilation iOS (Méthode xcodebuild native)
       - name: Build iOS App
         script: |
-          # Commande corrigée pour s'assurer que les arguments sont passés correctement
-          xcode-project build-ipa \
-            --workspace "ios/App/App.xcworkspace" \
-            --scheme "$XCODE_SCHEME" \
-            --configuration "Release" \
-            --export-method "app-store"
+          # 1. Archive du projet
+          xcodebuild archive \
+            -workspace "ios/App/App.xcworkspace" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Release \
+            -archivePath build/App.xcarchive \
+            -destination generic/platform=iOS \
+            CODE_SIGN_IDENTITY="$CM_CERTIFICATE_SIGNING_IDENTITY" \
+            PROVISIONING_PROFILE_SPECIFIER="$CM_PROVISIONING_PROFILE_SPECIFIER" \
+            ONLY_ACTIVE_ARCH=NO
+            
+          # 2. Exportation de l'IPA
+          xcodebuild -exportArchive \
+            -archivePath build/App.xcarchive \
+            -exportPath build/ipa \
+            -exportOptionsPlist ios/App/exportOptions.plist
+
 

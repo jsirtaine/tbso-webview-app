@@ -5,6 +5,10 @@
 /android/
 /ios/
 
+# MAIS, nous devons inclure le fichier exportOptions.plist
+# Nous allons donc ajouter une exception pour ce fichier spécifique
+!/ios/App/exportOptions.plist 
+
 # Fichiers de log et de cache
 *.log
 .DS_Store
