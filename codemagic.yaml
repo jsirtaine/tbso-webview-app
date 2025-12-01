@@ -36,6 +36,9 @@ workflows:
       # 3. Compilation iOS (Méthode xcodebuild native)
       - name: Build iOS App
         script: |
+          # COPIE DU FICHIER DE CONFIGURATION AU BON ENDROIT
+          cp config/exportOptions.plist ios/App/exportOptions.plist
+          
           # 1. Archive du projet
           xcodebuild archive \
             -workspace "ios/App/App.xcworkspace" \
