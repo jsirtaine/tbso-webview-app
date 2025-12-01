@@ -1,0 +1,10 @@
+# Dépendances Node
+/node_modules
+
+# Dossiers de build Capacitor
+/android/
+/ios/
+
+# Fichiers de log et de cache
+*.log
+.DS_Store

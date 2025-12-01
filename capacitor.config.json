@@ -1,0 +1,21 @@
+{
+  "appId": "com.tbso.society",
+  "appName": "The Bitcoin Society",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "https://society.tbso.fr",
+    "cleartext": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 500,
+      "launchAutoHide": true,
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false,
+      "androidSpinnerStyle": "small",
+      "splashFullScreen": true,
+      "splashImmersive": true
+    }
+  }
+}
