@@ -36,8 +36,10 @@ workflows:
       # 3. Compilation iOS
       - name: Build iOS App
         script: |
+          # Commande corrigée pour s'assurer que les arguments sont passés correctement
           xcode-project build-ipa \
             --workspace "ios/App/App.xcworkspace" \
             --scheme "$XCODE_SCHEME" \
             --configuration "Release" \
             --export-method "app-store"
+
