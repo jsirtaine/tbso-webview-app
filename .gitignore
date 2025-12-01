@@ -3,10 +3,12 @@
 
 # Dossiers de build Capacitor
 /android/
-/ios/
 
-# MAIS, nous devons inclure le fichier exportOptions.plist
-# Nous allons donc ajouter une exception pour ce fichier spécifique
+# Nouvelle règle : Ignorer le contenu du dossier ios/, mais pas le dossier lui-même
+# Cela permet aux règles d'exception de fonctionner.
+/ios/*
+
+# Exception pour le fichier exportOptions.plist
 !/ios/App/exportOptions.plist
 
 # Fichiers de log et de cache
