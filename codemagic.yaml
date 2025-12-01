@@ -9,6 +9,8 @@ workflows:
     # 1. Environnement de Construction
     instance_type: mac_mini_m1 
     environment:
+      # Les variables de signature sont gérées par Codemagic via l'interface
+      # et sont injectées automatiquement.
       vars:
         XCODE_SCHEME: "App"
         APP_ID: "com.tbso.society"
@@ -36,32 +38,24 @@ workflows:
       # 3. Compilation iOS
       - name: Build iOS App
         script: |
+          # La compilation utilise les variables de signature injectées par Codemagic
           xcode-project build-ipa \
             --workspace "ios/App/App.xcworkspace" \
             --scheme "$XCODE_SCHEME" \
             --configuration "Release" \
             --export-method "app-store"
 
-    # 4. Publication et Signature (TOUT est défini ici, sous le workflow)
+    # 4. Publication (Minimaliste et Stable)
     publishing:
-      # Signature Apple (remplace ios_user_and_team_secrets)
-      signing:
-        ios:
-          # Utilise les certificats configurés dans l'interface Codemagic
-          distribution_type: app_store
-          bundle_identifier: "$APP_ID"
-          
-      # Publication par e-mail (syntaxe corrigée)
+      # Signature Apple : Indique à Codemagic d'utiliser les certificats configurés
+      # dans l'interface utilisateur.
+      ios_user_and_team_secrets:
+        certificate_and_profile_matching: true
+        
+      # Publication par e-mail (syntaxe la plus simple et la plus stable)
       email:
         recipients:
-          - votre.email@example.com
+          - society@tbso.com
         triggering:
           - success
           - failure
-          
-      # App Store Connect (pour soumission à TestFlight)
-      app_store_connect:
-        auth:
-          # Doit être configuré dans l'interface Codemagic (App Settings -> Integrations)
-          api_key: App Store Connect API Key
-        submit_to_testflight: true
